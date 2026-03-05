@@ -35,7 +35,8 @@ Before making any changes to this repository, you MUST adhere to the following c
 ## 5. Strict Build & Type Safety (Vercel Readiness)
 - **Zero-Implicit Any:** Vercel's build environment is stricter than local dev. Implicit `any` in array callbacks (e.g., `.some(f => ...)`) will block the build. Always type explicitly: `.some((f: any) => ...)`.
 - **Config Robustness:** Configuration files (e.g., `prisma.config.ts`) must never assume environment variables exist. Always use fallbacks: `process.env.VAR || ""`.
-- **Pre-Push Verification:** You MUST run `npx tsc --noEmit` and `npm run build` locally before pushing to GitHub. A "successful" dev server is NOT proof of a successful build.
+- **Pre-Push Verification:** You MUST run `npx tsc --noEmit` and `pnpm build` locally before pushing to GitHub. A "successful" dev server is NOT proof of a successful build.
+- **Prisma Generation:** The `build` script in `package.json` MUST explicitly include `prisma generate` before `next build` to ensure the client is generated in CI/CD environments (Vercel).
 
 ## 6. Application Resilience & Stability (MANDATORY)
 - **Zero-Crash Policy:** The application MUST boot even if 3rd-party keys (Clerk, OpenAI) or the Database are missing/invalid.
