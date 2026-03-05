@@ -30,8 +30,14 @@ Before making any changes to this repository, you MUST adhere to the following c
 - **Proxy vs Middleware:** In Next.js 16, use `proxy.ts` instead of `middleware.ts` for route protection and edge logic.
 - **Server Actions:** Every Server Action file (e.g., in `app/actions/`) MUST start with the `'use server';` directive. Do NOT use `'use strict';`.
 - **Server-Only Leakage:** Be extremely careful not to import server-only modules (Clerk server SDK, OpenAI) into Client Components. If a module is used in both, wrap initialization in a lazy-loading function.
+- **Zod Versioning:** Keep `zod` and `@hookform/resolvers` compatible. Version mismatches cause catastrophic type failures in UI components during production builds.
 
-## 5. Application Resilience & Stability (MANDATORY)
+## 5. Strict Build & Type Safety (Vercel Readiness)
+- **Zero-Implicit Any:** Vercel's build environment is stricter than local dev. Implicit `any` in array callbacks (e.g., `.some(f => ...)`) will block the build. Always type explicitly: `.some((f: any) => ...)`.
+- **Config Robustness:** Configuration files (e.g., `prisma.config.ts`) must never assume environment variables exist. Always use fallbacks: `process.env.VAR || ""`.
+- **Pre-Push Verification:** You MUST run `npx tsc --noEmit` and `npm run build` locally before pushing to GitHub. A "successful" dev server is NOT proof of a successful build.
+
+## 6. Application Resilience & Stability (MANDATORY)
 - **Zero-Crash Policy:** The application MUST boot even if 3rd-party keys (Clerk, OpenAI) or the Database are missing/invalid.
 - **Graceful Fallbacks:** 
   - Use `try-catch` blocks in all service adapters (e.g., `lib/services/ai.service.ts`).
@@ -41,7 +47,7 @@ Before making any changes to this repository, you MUST adhere to the following c
   - Display non-intrusive warning banners in the root layout when running in "Limited Mode" (missing Auth or local DB).
 - **Port Management:** Standard dev port is `3000`. If it's blocked, identify and kill the process instead of drifting to random ports.
 
-## 6. Workflow & TDD
+## 7. Workflow & TDD
 - **STRICT TDD:** You MUST follow the `test-driven-development` skill. No production code without a failing test first.
 - **Brainstorming:** Use the `brainstorming` skill before touching any creative code. Do not write implementation without a plan.
 

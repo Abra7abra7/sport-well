@@ -19,7 +19,7 @@ export default function ClientDashboard() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {menu.map((item) => (
+                {menu.map((item: any) => (
                     <Link key={item.title} href={item.link} className="no-underline group">
                         <Card className="h-full hover:-translate-y-2 transition-transform cursor-pointer border-none shadow-xl bg-white rounded-3xl overflow-hidden group-hover:ring-4 group-hover:ring-primary/10">
                             <CardHeader className="text-center space-y-4 py-10">

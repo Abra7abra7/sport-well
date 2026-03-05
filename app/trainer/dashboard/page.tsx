@@ -36,7 +36,7 @@ export default async function TrainerDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {trainer.bookingsAsTrainer.length > 0 ? (
-                    trainer.bookingsAsTrainer.map((booking) => (
+                    trainer.bookingsAsTrainer.map((booking: any) => (
                         <Card key={booking.id} className="shadow-sm border-l-4 border-l-primary">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-lg flex justify-between">

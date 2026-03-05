@@ -75,7 +75,7 @@ export function AIBookingForm() {
             {matches.length > 0 && (
                 <div className="grid gap-4 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">Navrhovaní tréneri pre vás</h2>
-                    {matches.map((match) => (
+                    {matches.map((match: any) => (
                         <Card key={match.trainerId} className="hover:shadow-lg transition-shadow border-l-4 border-l-primary">
                             <CardHeader>
                                 <div className="flex justify-between items-center">
