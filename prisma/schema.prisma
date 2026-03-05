@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  TRAINER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentMethod {
+  CREDIT
+  STRIPE
+  GOPAY
+  CASH
+}
+
+model User {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique // Synced from Clerk Webhook
+  email         String    @unique
+  firstName     String?
+  lastName      String?
+  phone         String?
+  role          Role      @default(CLIENT)
+  creditBalance Int       @default(0) // Central ledger
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  bookingsAsClient  Booking[] @relation("ClientBookings")
+  bookingsAsTrainer Booking[] @relation("TrainerBookings")
+  creditTransactions CreditTransaction[]
+  diagnosticForms    DiagnosticForm[]
+  notes             SessionNote[]
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  clientId        String
+  trainerId       String
+  client          User          @relation("ClientBookings", fields: [clientId], references: [id])
+  trainer         User          @relation("TrainerBookings", fields: [trainerId], references: [id])
+  
+  startTime       DateTime
+  endTime         DateTime
+  status          BookingStatus @default(PENDING)
+  notes           String?       // Client's initial requested issue e.g. "back pain"
+
+  paymentMethod   PaymentMethod?
+  price           Int?          // Price in cents if paid directly
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  sessionNote     SessionNote?
+}
+
+model SessionNote {
+  id          String   @id @default(cuid())
+  bookingId   String   @unique
+  booking     Booking  @relation(fields: [bookingId], references: [id])
+  trainerId   String
+  trainer     User     @relation(fields: [trainerId], references: [id])
+  
+  content     String   // Trainer's notes post session
+  attachments String[] // Array of URLs to PDFs/images
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CreditTransaction {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  amount      Int           // Positive for top-up, negative for booking deduction
+  reason      String        // e.g. "Bought 10 pack", "Booking deduction"
+  method      PaymentMethod 
+  
+  createdAt   DateTime      @default(now())
+}
+
+model DiagnosticForm {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  formType    String   // e.g. "GDPR", "INITIAL_DIAGNOSTIC"
+  formData    Json     // Flexible JSON payload for the 10 different forms
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageContent {
+  id          String   @id @default(cuid())
+  slug        String   @unique // e.g. "home", "sluzby", "pricing"
+  title       String
+  content     Json     // Editor.js or TipTap JSON representation
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
