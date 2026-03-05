@@ -48,9 +48,17 @@ Before making any changes to this repository, you MUST adhere to the following c
   - Display non-intrusive warning banners in the root layout when running in "Limited Mode" (missing Auth or local DB).
 - **Port Management:** Standard dev port is `3000`. If it's blocked, identify and kill the process instead of drifting to random ports.
 
-## 7. Workflow & TDD
-- **STRICT TDD:** You MUST follow the `test-driven-development` skill. No production code without a failing test first.
-- **Brainstorming:** Use the `brainstorming` skill before touching any creative code. Do not write implementation without a plan.
+## 7. Workflow & TDD (MANDATORY)
+- **The Iron Law:** NO production code without a failing test first. If you write code before the test, DELETE IT and start over.
+- **Session Kickstart:** Every session MUST begin by running existing tests to verify baseline stability: `pnpm test`.
+- **The TDD Cycle (Red-Green-Refactor):**
+  1. **RED:** Write a minimal failing test that describes the desired behavior.
+  2. **V-RED:** Run `pnpm test <file>` and watch it fail for the *expected* reason.
+  3. **GREEN:** Write the absolute MINIMAL code to make the test pass.
+  4. **V-GREEN:** Run `pnpm test <file>` and watch it pass.
+  5. **REFACTOR:** Clean up the code while keeping the test passing.
+- **Skills:** You MUST use the `test-driven-development` and `brainstorming` skills. Rationalizing "just this once" to skip TDD is a violation of project rules.
+- **Verification:** Before notifying the user, run the full suite: `pnpm test`, `npx tsc --noEmit`, and `pnpm build`.
 
 Violating these rules will result in technical debt, build errors, or a rejected PR. Read `docs/plans/` for current implementation details.
 <!-- END:nextjs-agent-rules -->
