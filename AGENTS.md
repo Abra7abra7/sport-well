@@ -19,7 +19,14 @@ Before making any changes to this repository, you MUST adhere to the following c
 - **Styling:** Tailwind CSS v4 + Radix/shadcn UI.
 - Aim for 1-click experiences, minimal text, and smart AI automation.
 
-## 3. Workflow & TDD
+## 3. Brand Style & UI Tokens (Extracted from sportwell.sk)
+- **Primary Color:** Deep Blue `rgb(0, 40, 125)` / `#00287D`. Used for H1 headings, primary buttons, and major accents.
+- **Background / Surface:** Pure White `rgb(255, 255, 255)` with Light Gray secondary surfaces `rgb(235, 235, 235)`.
+- **Text Color:** Near Black `rgb(10, 10, 10)`.
+- **Typography - Headings:** `"Asap Condensed", sans-serif`. You MUST configure this font via `next/font/google`.
+- **Typography - Body:** System sans-serif.
+
+## 4. Workflow & TDD
 - **STRICT TDD:** You MUST follow the `test-driven-development` skill. No production code without a failing test first. (Mocks only when unavoidable).
 - **Brainstorming:** Use the `brainstorming` skill before touching any creative code. Do not write implementation without a plan.
 

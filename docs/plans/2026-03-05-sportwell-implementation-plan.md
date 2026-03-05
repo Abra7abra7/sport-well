@@ -8,6 +8,9 @@ Transform the conceptual design of the SportWell unified system into a concrete 
 ### 1. Project Initialization & Setup (Next.js 16)
 *   Leverage existing Next.js 16 Canary setup.
 *   Use `next-best-practices` to prepare asynchronous segments and data patterns.
+*   Configure Tailwind CSS variables with SportWell Brand Tokens:
+    *   Primary: `#00287D` (Deep Blue)
+    *   Heading Font: `Asap Condensed` (via `next/font/google`)
 
 ### 2. Database & Abstracted Interfaces
 *   Initialize Prisma with PostgreSQL.
