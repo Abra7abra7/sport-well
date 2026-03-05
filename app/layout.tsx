@@ -19,21 +19,33 @@ export const metadata: Metadata = {
   description: "Moderné rehabilitačné a športové centrum s inteligentnými rezerváciami.",
 };
 
+const hasClerkKeys = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes('placeholder');
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider>
-      <html
-        lang="sk"
-        className={`${geistSans.variable} ${asapCondensed.variable} h-full antialiased`}
-      >
-        <body className="min-h-full flex flex-col font-sans text-gray-900 bg-white">
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+  const content = (
+    <html
+      lang="sk"
+      className={`${geistSans.variable} ${asapCondensed.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col font-sans text-gray-900 bg-white">
+        {!hasClerkKeys && (
+          <div className="bg-amber-50 border-b border-amber-200 p-2 text-center text-xs text-amber-800 font-medium z-50">
+            ⚠️ Konfigurácia Clerk Auth chýba. Prihlasovanie a chránené zóny nebudú funkčné.
+          </div>
+        )}
+        {children}
+      </body>
+    </html>
   );
+
+  if (hasClerkKeys) {
+    return <ClerkProvider>{content}</ClerkProvider>;
+  }
+
+  return content;
 }

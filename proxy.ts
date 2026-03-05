@@ -2,8 +2,11 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isPublicRoute = createRouteMatcher(['/((?!admin|client-zone).*)']);
 
+const hasClerkKeys = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+    !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes('placeholder');
+
 export default clerkMiddleware(async (auth, req) => {
-    if (!isPublicRoute(req)) {
+    if (hasClerkKeys && !isPublicRoute(req)) {
         await auth.protect();
     }
 });
