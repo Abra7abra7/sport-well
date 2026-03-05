@@ -22,7 +22,7 @@ export default async function ClientFormsPage() {
     ];
 
     const getStatus = (type: string) => {
-        return user.diagnosticForms.some(f => f.formType === type);
+        return user.diagnosticForms.some((f: any) => f.formType === type);
     };
 
     return (
