@@ -26,9 +26,24 @@ Before making any changes to this repository, you MUST adhere to the following c
 - **Typography - Headings:** `"Asap Condensed", sans-serif`. You MUST configure this font via `next/font/google`.
 - **Typography - Body:** System sans-serif.
 
-## 4. Workflow & TDD
-- **STRICT TDD:** You MUST follow the `test-driven-development` skill. No production code without a failing test first. (Mocks only when unavoidable).
+## 4. Next.js 16 Technical Conventions
+- **Proxy vs Middleware:** In Next.js 16, use `proxy.ts` instead of `middleware.ts` for route protection and edge logic.
+- **Server Actions:** Every Server Action file (e.g., in `app/actions/`) MUST start with the `'use server';` directive. Do NOT use `'use strict';`.
+- **Server-Only Leakage:** Be extremely careful not to import server-only modules (Clerk server SDK, OpenAI) into Client Components. If a module is used in both, wrap initialization in a lazy-loading function.
+
+## 5. Application Resilience & Stability (MANDATORY)
+- **Zero-Crash Policy:** The application MUST boot even if 3rd-party keys (Clerk, OpenAI) or the Database are missing/invalid.
+- **Graceful Fallbacks:** 
+  - Use `try-catch` blocks in all service adapters (e.g., `lib/services/ai.service.ts`).
+  - If a service fails (e.g., DB connection error, OpenAI quota), return **Mock Data** instead of throwing an error.
+- **UI Status Indicators:** 
+  - Wrap `ClerkProvider` in a check for valid keys in `app/layout.tsx`.
+  - Display non-intrusive warning banners in the root layout when running in "Limited Mode" (missing Auth or local DB).
+- **Port Management:** Standard dev port is `3000`. If it's blocked, identify and kill the process instead of drifting to random ports.
+
+## 6. Workflow & TDD
+- **STRICT TDD:** You MUST follow the `test-driven-development` skill. No production code without a failing test first.
 - **Brainstorming:** Use the `brainstorming` skill before touching any creative code. Do not write implementation without a plan.
 
-Violating these rules will result in technical debt and a rejected PR. Read `docs/plans/` for current implementation details.
+Violating these rules will result in technical debt, build errors, or a rejected PR. Read `docs/plans/` for current implementation details.
 <!-- END:nextjs-agent-rules -->
