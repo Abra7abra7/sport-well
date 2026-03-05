@@ -33,11 +33,18 @@ export default function RootLayout({
       className={`${geistSans.variable} ${asapCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans text-gray-900 bg-white">
-        {!hasClerkKeys && (
-          <div className="bg-amber-50 border-b border-amber-200 p-2 text-center text-xs text-amber-800 font-medium z-50">
-            ⚠️ Konfigurácia Clerk Auth chýba. Prihlasovanie a chránené zóny nebudú funkčné.
-          </div>
-        )}
+        <div className="z-50 flex flex-col sticky top-0">
+          {!hasClerkKeys && (
+            <div className="bg-amber-50 border-b border-amber-100 p-2 text-center text-xs text-amber-800 font-medium">
+              ⚠️ Konfigurácia Clerk Auth chýba. Prihlasovanie a chránené zóny nebudú funkčné.
+            </div>
+          )}
+          {process.env.DATABASE_URL?.includes('localhost') && (
+            <div className="bg-blue-50 border-b border-blue-100 p-1 text-center text-[10px] text-blue-700 font-normal">
+              ℹ️ Režim lokálnej databázy. Ak vidíte chyby pri načítaní dát, uistite sa, že Docker/Postgres beží.
+            </div>
+          )}
+        </div>
         {children}
       </body>
     </html>
