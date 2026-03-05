@@ -1,4 +1,4 @@
-'use strict';
+'use server';
 
 import { z } from 'zod';
 import { matchTrainerForIssue } from '@/lib/services/ai.service';

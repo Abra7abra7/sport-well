@@ -1,9 +1,21 @@
 import OpenAI from 'openai';
 import prisma from '@/lib/db';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy-initialize OpenAI client to prevent crash on module evaluation if key is missing
+let _openai: OpenAI | null = null;
+
+function getOpenAIClient() {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey || apiKey.includes('placeholder')) {
+        return null;
+    }
+    if (!_openai) {
+        _openai = new OpenAI({
+            apiKey: apiKey,
+        });
+    }
+    return _openai;
+}
 
 export interface TrainerMatchResult {
     trainerId: string;
@@ -21,7 +33,17 @@ export async function matchTrainerForIssue(clientIssue: string): Promise<Trainer
     if (trainers.length === 0) return [];
 
     // 2. Simple AI matching logic
-    // In a full implementation, we'd pass trainer specialties/bios to GPT
+    const openai = getOpenAIClient();
+
+    if (!openai) {
+        console.warn('OpenAI API key missing or invalid. Falling back to default trainer.');
+        return [{
+            trainerId: trainers[0].id,
+            relevanceScore: 50,
+            reasoning: "Automatické priradenie (AI konfigurácia chýba)."
+        }];
+    }
+
     const trainerProfiles = trainers.map(t => `${t.firstName} ${t.lastName} (ID: ${t.id})`).join('\n');
 
     const prompt = `
