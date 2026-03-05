@@ -14,7 +14,14 @@ function getLocale(request: any) {
     return match(languages, locales, defaultLocale);
 }
 
-const isPublicRoute = createRouteMatcher(['/((?!admin|client-zone|trener).*)']);
+const isProtectedRoute = createRouteMatcher([
+    '/:lang/admin(.*)',
+    '/:lang/client-zone(.*)',
+    '/:lang/trener(.*)',
+    '/admin(.*)',
+    '/client-zone(.*)',
+    '/trener(.*)'
+]);
 
 const hasClerkKeys = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
     !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes('placeholder');
@@ -36,7 +43,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     // 3. Protect routes
-    if (hasClerkKeys && !isPublicRoute(req)) {
+    if (hasClerkKeys && isProtectedRoute(req)) {
         await auth.protect();
     }
 });
