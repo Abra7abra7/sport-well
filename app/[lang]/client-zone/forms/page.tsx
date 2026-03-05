@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, CircleDashed } from "lucide-react";
 
-export default async function ClientFormsPage() {
+export default async function ClientFormsPage({
+    params,
+}: {
+    params: Promise<{ lang: string }>;
+}) {
+    const { lang } = await params;
     const { userId: clerkId } = await auth();
     if (!clerkId) return <div>Unauthorized</div>;
+
 
     let user = null;
     try {
@@ -68,7 +74,7 @@ export default async function ClientFormsPage() {
                             </CardHeader>
                             {!isDone && (
                                 <CardContent>
-                                    <Link href={`/client-zone/forms/fill/${form.type}`}>
+                                    <Link href={`/${lang}/client-zone/forms/fill/${form.type}`}>
                                         <Button className="w-full bg-primary text-white font-bold">Vyplniť teraz</Button>
                                     </Link>
                                 </CardContent>

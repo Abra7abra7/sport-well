@@ -22,7 +22,7 @@ describe('ClientFormsPage', () => {
         (auth as any).mockResolvedValue({ userId: 'user_123' });
         (prisma.user.findUnique as any).mockRejectedValue(new Error('DB Connection Failed'));
 
-        const Result = await ClientFormsPage();
+        const Result = await ClientFormsPage({ params: Promise.resolve({ lang: 'sk' }) });
         render(Result);
 
         expect(screen.getByText(/Moje Dokumenty/i)).toBeInTheDocument();

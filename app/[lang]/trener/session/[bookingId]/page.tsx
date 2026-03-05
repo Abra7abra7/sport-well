@@ -2,11 +2,13 @@ import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 import SessionNoteForm from "@/components/trainer/session-note-form";
 
-export default async function SessionPage({ params }: { params: { bookingId: string } }) {
+export default async function SessionPage({ params }: { params: Promise<{ lang: string; bookingId: string }> }) {
+    const { bookingId } = await params;
     const booking = await prisma.booking.findUnique({
-        where: { id: params.bookingId },
+        where: { id: bookingId },
         include: { client: true }
     });
+
 
     if (!booking) notFound();
 

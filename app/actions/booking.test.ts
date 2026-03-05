@@ -29,13 +29,35 @@ describe('Booking Actions', () => {
     });
 
     describe('findTrainerMatches', () => {
-        it('should throw Unauthorized if no user', async () => {
+        it('should throw Unauthorized if no user and REAL keys are present', async () => {
+            // Simulate real keys
+            vi.stubEnv('NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY', 'pk_live_real_key');
             (auth as any).mockResolvedValue({ userId: null });
+
             const formData = new FormData();
+            formData.append('issueDescription', 'Test description more than 10 chars');
+
             await expect(findTrainerMatches(formData)).rejects.toThrow('Unauthorized');
+            vi.unstubAllEnvs();
         });
 
-        it('should return matches for valid input', async () => {
+        it('should NOT throw and use mock user in Limited Mode (placeholder keys)', async () => {
+            // Simulate placeholder keys
+            vi.stubEnv('NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY', 'pk_test_placeholder');
+            (auth as any).mockResolvedValue({ userId: null });
+
+            const mockMatches = [{ trainerId: 't-mock', relevanceScore: 100, reasoning: 'mock' }];
+            (matchTrainerForIssue as any).mockResolvedValue(mockMatches);
+
+            const formData = new FormData();
+            formData.append('issueDescription', 'Test description more than 10 chars');
+
+            const result = await findTrainerMatches(formData);
+            expect(result).toEqual(mockMatches);
+            vi.unstubAllEnvs();
+        });
+
+        it('should return matches for valid input when authenticated', async () => {
             (auth as any).mockResolvedValue({ userId: 'user_1' });
             const mockMatches = [{ trainerId: 't1', relevanceScore: 90, reasoning: 'test' }];
             (matchTrainerForIssue as any).mockResolvedValue(mockMatches);

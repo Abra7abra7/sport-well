@@ -1,0 +1,26 @@
+{
+    "landing": {
+        "badge": "Prémiová fyzioterapia v Bratislave",
+        "title": "Vráťte sa k pohybu bez bolesti",
+        "description": "Personalizovaná starostlivosť poháňaná umelou inteligenciou. Nájdeme vám ideálneho trénera na základe vašej diagnózy.",
+        "ctaBooking": "Rezervovať termín",
+        "ctaServices": "Naše služby"
+    },
+    "features": {
+        "diagnostic": {
+            "title": "Odborná diagnostika",
+            "desc": "Kompletné zhodnotenie pohybového aparátu modernými prístrojmi."
+        },
+        "plan": {
+            "title": "Individuálny plán",
+            "desc": "Rehabilitačný plán ušitý na mieru vašim cieľom a potrebám."
+        },
+        "prevention": {
+            "title": "Prevencia a výkon",
+            "desc": "Nielen liečime bolesť, ale pripravujeme vás na návrat k maximálnemu výkonu."
+        }
+    },
+    "footer": {
+        "rights": "© 2026 SportWell. Všetky práva vyhradené."
+    }
+}

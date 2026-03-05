@@ -1,6 +1,12 @@
 import { AIBookingForm } from "@/components/booking/ai-booking-form";
 
-export default function BookingPage() {
+export default async function BookingPage({
+    params,
+}: {
+    params: Promise<{ lang: string }>;
+}) {
+    const { lang } = await params;
+
     return (
         <main className="min-h-screen py-12 bg-gray-50">
             <div className="container mx-auto px-4">

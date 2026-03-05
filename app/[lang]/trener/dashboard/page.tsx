@@ -4,9 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default async function TrainerDashboard() {
+export default async function TrainerDashboard({
+    params,
+}: {
+    params: Promise<{ lang: string }>;
+}) {
+    const { lang } = await params;
     const { userId: clerkId } = await auth();
     if (!clerkId) return <div>Unauthorized</div>;
+
 
     let trainer = null;
     try {
@@ -71,7 +77,7 @@ export default async function TrainerDashboard() {
                                     "{booking.notes || "Nebol zadaný žiadny problém."}"
                                 </p>
                                 <div className="flex gap-2">
-                                    <Link href={`/trainer/session/${booking.id}`} className="w-full">
+                                    <Link href={`/${lang}/trener/session/${booking.id}`} className="w-full">
                                         <Button variant="default" className="w-full bg-primary">Začať sedenie</Button>
                                     </Link>
                                     <Button variant="outline">Profil</Button>

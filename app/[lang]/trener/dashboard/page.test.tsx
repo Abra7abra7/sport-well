@@ -22,7 +22,7 @@ describe('TrainerDashboard', () => {
         (auth as any).mockResolvedValue({ userId: 'trainer_123' });
         (prisma.user.findUnique as any).mockRejectedValue(new Error('DB Connection Failed'));
 
-        const Result = await TrainerDashboard();
+        const Result = await TrainerDashboard({ params: Promise.resolve({ lang: 'sk' }) });
         render(Result);
 
         expect(screen.getByText(/Prehľad trénera/i)).toBeInTheDocument();

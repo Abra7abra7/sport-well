@@ -1,0 +1,26 @@
+{
+    "landing": {
+        "badge": "Premium physiotherapy in Bratislava",
+        "title": "Return to movement without pain",
+        "description": "Personalized care powered by artificial intelligence. We find you the ideal trainer based on your diagnosis.",
+        "ctaBooking": "Book appointment",
+        "ctaServices": "Our services"
+    },
+    "features": {
+        "diagnostic": {
+            "title": "Expert diagnostics",
+            "desc": "Complete assessment of the musculoskeletal system with modern devices."
+        },
+        "plan": {
+            "title": "Individual plan",
+            "desc": "Rehabilitation plan tailored to your goals and needs."
+        },
+        "prevention": {
+            "title": "Prevention and performance",
+            "desc": "We not only treat pain, but prepare you for a return to maximum performance."
+        }
+    },
+    "footer": {
+        "rights": "© 2026 SportWell. All rights reserved."
+    }
+}

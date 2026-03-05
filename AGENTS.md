@@ -1,7 +1,13 @@
 <!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# MANDATORY: PROJECT KICKSTART
+**At the start of EVERY new session, you MUST:**
+1. Read this `AGENTS.md` file in its entirety.
+2. Run `pnpm test` to verify current project stability.
+3. Call `task_boundary` to summarize the current state and planned tasks.
+4. Adhere strictly to the TDD and Zero-Crash policies defined below.
 
-This project runs on **Next.js 16 (Canary) with App Router**. APIs, conventions, and file structures MUST follow the latest Next.js 15/16 best practices. Check active skills and `node_modules/next/dist/docs/` before writing any code.
+# This is NOT the Next.js you know
+This project runs on **Next.js 16 (Stable 16.1.6) with App Router**. APIs, conventions, and file structures MUST follow the latest Next.js 15/16 best practices. Check active skills and `node_modules/next/dist/docs/` before writing any code.
 
 # SportWell Unified AI Platform - STRICT System Rules
 Before making any changes to this repository, you MUST adhere to the following constraints:
@@ -50,7 +56,12 @@ Before making any changes to this repository, you MUST adhere to the following c
 
 ## 7. Workflow & TDD (MANDATORY)
 - **The Iron Law:** NO production code without a failing test first. If you write code before the test, DELETE IT and start over.
-- **Session Kickstart:** Every session MUST begin by running existing tests to verify baseline stability: `pnpm test`.
+- **Mandatory Session Kickstart**: Every new session MUST begin with:
+    *   `pnpm test` (Verify all 18+ tests pass)
+    *   `npm run build` (Verify Next.js 16.1.6 production stability)
+    *   **Verify DB State**: Run `node scripts/check-db.js`. If trainers are missing, run `node scripts/seed-trainers.js`.
+    *   **Verify AI Config**: Ensure `AI_PROVIDER` and `AI_API_KEY` are valid in `.env`.
+    *   Check for any TypeScript errors in modified files.
 - **The TDD Cycle (Red-Green-Refactor):**
   1. **RED:** Write a minimal failing test that describes the desired behavior.
   2. **V-RED:** Run `pnpm test <file>` and watch it fail for the *expected* reason.

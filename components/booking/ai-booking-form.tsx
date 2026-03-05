@@ -29,14 +29,17 @@ export function AIBookingForm() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log('Submitting AI Booking request:', values);
         setLoading(true);
         try {
             const formData = new FormData();
             formData.append('issueDescription', values.issueDescription);
             const results = await findTrainerMatches(formData);
+            console.log('Received AI matches:', results);
             setMatches(results);
         } catch (error) {
-            console.error(error);
+            console.error('Error in AI Booking submission:', error);
+            alert('Nastala chyba pri hľadaní trénera. Skúste to prosím znova.');
         } finally {
             setLoading(false);
         }
@@ -72,20 +75,22 @@ export function AIBookingForm() {
                 </form>
             </Form>
 
-            {matches.length > 0 && (
+            {matches.length > 0 ? (
                 <div className="grid gap-4 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">Navrhovaní tréneri pre vás</h2>
-                    {matches.map((match: any) => (
-                        <Card key={match.trainerId} className="hover:shadow-lg transition-shadow border-l-4 border-l-primary">
+                    {matches.map((match: any, index: number) => (
+                        <Card key={`${match.trainerId}-${index}`} className="hover:shadow-lg transition-shadow border-l-4 border-l-primary">
                             <CardHeader>
                                 <div className="flex justify-between items-center">
-                                    <CardTitle>Tréner #{match.trainerId.substring(0, 5)}</CardTitle>
+                                    <CardTitle>
+                                        Tréner: {match.trainerName || (match.trainerId ? `#${match.trainerId.substring(0, 5)}` : 'Špecialista')}
+                                    </CardTitle>
                                     <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold">
                                         Zhoda: {match.relevanceScore}%
                                     </span>
                                 </div>
                                 <CardDescription className="italic text-gray-600 mt-2">
-                                    "{match.reasoning}"
+                                    "{match.reasoning || 'Na základe vášho popisu je tento odborník vhodnou voľbou.'}"
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -93,6 +98,11 @@ export function AIBookingForm() {
                             </CardContent>
                         </Card>
                     ))}
+                </div>
+            ) : !loading && form.formState.isSubmitted && (
+                <div className="mt-8 p-6 bg-blue-50 rounded-2xl text-center text-blue-800">
+                    Nenašli sme presnú zhodu, ale naši tréneri sú pripravení vám pomôcť.
+                    Skúste prosím podrobnejšie popísať váš stav.
                 </div>
             )}
         </div>

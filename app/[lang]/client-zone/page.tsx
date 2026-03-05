@@ -3,12 +3,17 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Calendar, FileText, UserCircle, CreditCard } from "lucide-react";
 
-export default function ClientDashboard() {
+export default async function ClientDashboard({
+    params,
+}: {
+    params: Promise<{ lang: string }>;
+}) {
+    const { lang } = await params;
     const menu = [
-        { title: 'Nová rezervácia', desc: 'AI vyhľadávanie trénera', link: '/client-zone/booking', icon: Calendar, color: 'text-blue-600' },
-        { title: 'Moje formuláre', desc: 'GDPR a diagnostika', link: '/client-zone/forms', icon: FileText, color: 'text-amber-600' },
-        { title: 'Profil klienta', desc: 'Osobné nastavenia', link: '/client-zone/profile', icon: UserCircle, color: 'text-purple-600' },
-        { title: 'Kredity a platby', desc: 'Stav účtu a GoPay', link: '/client-zone/payments', icon: CreditCard, color: 'text-green-600' },
+        { title: 'Nová rezervácia', desc: 'AI vyhľadávanie trénera', link: `/${lang}/client-zone/booking`, icon: Calendar, color: 'text-blue-600' },
+        { title: 'Moje formuláre', desc: 'GDPR a diagnostika', link: `/${lang}/client-zone/forms`, icon: FileText, color: 'text-amber-600' },
+        { title: 'Profil klienta', desc: 'Osobné nastavenia', link: `/${lang}/client-zone/profile`, icon: UserCircle, color: 'text-purple-600' },
+        { title: 'Kredity a platby', desc: 'Stav účtu u GoPay', link: `/${lang}/client-zone/payments`, icon: CreditCard, color: 'text-green-600' },
     ];
 
     return (

@@ -26,5 +26,5 @@ export interface AuthService {
     /**
      * Enforces role requirements (used in Middleware or Server Actions).
      */
-    requireRole(role: 'CLIENT' | 'TRAINER' | 'ADMIN'): Promise<boolean>;
+    requireRole(role: 'CLIENT' | 'TRAINER' | 'PHYSIO' | 'MASSEUR' | 'OWNER' | 'RECEPTIONIST' | 'ADMIN'): Promise<boolean>;
 }

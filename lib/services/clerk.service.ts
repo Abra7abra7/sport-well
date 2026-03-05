@@ -23,7 +23,7 @@ export class ClerkAuthAdapter implements AuthService {
         return `/sign-out${redirectUrl ? `?redirect_url=${encodeURIComponent(redirectUrl)}` : ''}`;
     }
 
-    async requireRole(role: 'CLIENT' | 'TRAINER' | 'ADMIN'): Promise<boolean> {
+    async requireRole(role: 'CLIENT' | 'TRAINER' | 'PHYSIO' | 'MASSEUR' | 'OWNER' | 'RECEPTIONIST' | 'ADMIN' | 'SUPER_ADMIN' | 'GUEST'): Promise<boolean> {
         // In a real scenario, we check publicMetadata or local DB role
         // For now, we assume role check is handled via middleware or specific role-based logic
         // but this adapter provides a hook for it.
